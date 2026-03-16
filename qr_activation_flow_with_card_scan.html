@@ -1,0 +1,545 @@
+
+<style>
+@font-face { font-family:'BDOGrotesk'; src:url('https://cdn.jsdelivr.net/gh/nicholasgasior/fonts@main/BDOGrotesk-Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
+@font-face { font-family:'BDOGrotesk'; src:url('https://cdn.jsdelivr.net/gh/nicholasgasior/fonts@main/BDOGrotesk-Medium.woff2') format('woff2'); font-weight:500; font-display:swap; }
+@font-face { font-family:'BDOGrotesk'; src:url('https://cdn.jsdelivr.net/gh/nicholasgasior/fonts@main/BDOGrotesk-Bold.woff2') format('woff2'); font-weight:700; font-display:swap; }
+
+.wr { font-family:'BDOGrotesk','Helvetica Neue',Arial,sans-serif; background:#F5F5F3; border-radius:12px; overflow:hidden; }
+
+/* NAV */
+.wr-nav { background:#FFFFFF; border-bottom:1px solid #E2E2E0; padding:10px 16px; display:flex; gap:5px; align-items:center; flex-wrap:wrap; }
+.wr-logo { font-size:11px; font-weight:700; letter-spacing:0.15em; color:#C9A84C; text-transform:uppercase; margin-right:6px; }
+.nb { background:transparent; border:1px solid #E2E2E0; border-radius:20px; padding:5px 11px; font-family:'BDOGrotesk',sans-serif; font-size:9px; font-weight:600; letter-spacing:0.05em; color:#AAAAAA; cursor:pointer; text-transform:uppercase; white-space:nowrap; }
+.nb.on { background:#1A1A1A; border-color:#1A1A1A; color:#FFFFFF; }
+
+/* PHONE */
+.ph-stage { background:#F5F5F3; display:flex; justify-content:center; padding:24px 16px 28px; }
+.ph { width:300px; background:#FFFFFF; border-radius:40px; border:1.5px solid #D8D8D6; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 8px 40px rgba(0,0,0,0.12),0 2px 8px rgba(0,0,0,0.06); }
+.ph-notch { background:#FFFFFF; height:30px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.notch-p { width:72px; height:10px; background:#F0F0EE; border-radius:5px; }
+
+.scr { display:none; flex-direction:column; }
+.scr.on { display:flex; }
+.sx { background:#FFFFFF; padding:20px 20px 28px; display:flex; flex-direction:column; align-items:center; gap:14px; }
+.s3x { background:#FFFFFF; padding:16px 20px 28px; display:flex; flex-direction:column; align-items:center; gap:12px; position:relative; overflow:hidden; }
+
+/* TYPOGRAPHY */
+.wm { font-size:10px; font-weight:700; letter-spacing:0.3em; color:#BBBBBB; text-transform:uppercase; }
+.sh { font-size:20px; font-weight:700; color:#111111; text-align:center; line-height:1.2; letter-spacing:-0.3px; }
+.ss { font-size:11px; color:#888888; text-align:center; line-height:1.6; letter-spacing:0.02em; margin-top:-4px; font-family:'BDOGrotesk',monospace; }
+
+/* ── SCREEN 0 – PHYSICAL CARD ── */
+.s0-hint { font-family:'BDOGrotesk',monospace; font-size:11px; color:#888; text-align:center; line-height:1.6; }
+
+.physical-card {
+  width: 210px;
+  aspect-ratio: 2.5/3.5;
+  background: linear-gradient(160deg, #1A1A1A 0%, #0E0E0E 100%);
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 14px 16px;
+}
+
+/* gold corner accents */
+.physical-card::before {
+  content:'';
+  position:absolute; top:0; left:0;
+  width:60px; height:60px;
+  border-top:1.5px solid rgba(201,168,76,0.5);
+  border-left:1.5px solid rgba(201,168,76,0.5);
+  border-radius:14px 0 0 0;
+  pointer-events:none;
+}
+.physical-card::after {
+  content:'';
+  position:absolute; bottom:0; right:0;
+  width:60px; height:60px;
+  border-bottom:1.5px solid rgba(201,168,76,0.5);
+  border-right:1.5px solid rgba(201,168,76,0.5);
+  border-radius:0 0 14px 0;
+  pointer-events:none;
+}
+
+.pc-top { display:flex; justify-content:space-between; align-items:flex-start; width:100%; z-index:1; }
+.pc-brand { font-family:'BDOGrotesk',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.2em; color:rgba(255,255,255,0.4); text-transform:uppercase; }
+.pc-rb { background:#C9A84C; color:#2A1600; font-family:'BDOGrotesk',monospace; font-size:7px; font-weight:700; padding:2px 6px; border-radius:4px; letter-spacing:0.5px; box-shadow:0 0 8px rgba(201,168,76,0.6); }
+
+.pc-art {
+  width:100px; height:100px;
+  background:linear-gradient(145deg,#C9A84C 0%,#F5E4A0 50%,#9A7820 100%);
+  border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  z-index:1;
+}
+
+.pc-bottom { width:100%; z-index:1; display:flex; flex-direction:column; align-items:center; gap:4px; }
+.pc-name { font-family:'BDOGrotesk',sans-serif; font-size:11px; font-weight:700; color:#FFFFFF; letter-spacing:0.05em; text-align:center; }
+.pc-sub { font-family:'BDOGrotesk',monospace; font-size:8px; color:rgba(255,255,255,0.3); letter-spacing:0.1em; text-transform:uppercase; }
+
+/* QR on back of card */
+.qr-card-wrap {
+  width:210px;
+  aspect-ratio:2.5/3.5;
+  background:#FFFFFF;
+  border-radius:14px;
+  border:1px solid #E2E2E0;
+  box-shadow:0 16px 48px rgba(0,0,0,0.12),0 4px 12px rgba(0,0,0,0.06);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  padding:20px;
+  position:relative;
+}
+
+.qr-card-top-label {
+  position:absolute; top:14px;
+  font-family:'BDOGrotesk',monospace;
+  font-size:8px; font-weight:700;
+  letter-spacing:0.2em; text-transform:uppercase;
+  color:#BBBBBB;
+}
+
+.qr-box {
+  width:110px; height:110px;
+  background:#FFFFFF;
+  border:1.5px solid #E2E2E0;
+  border-radius:10px;
+  padding:8px;
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+
+/* scanning line animation */
+.scan-line {
+  position:absolute;
+  left:8px; right:8px;
+  height:2px;
+  background:linear-gradient(90deg, transparent, #C9A84C, transparent);
+  border-radius:1px;
+  animation:scanMove 2s ease-in-out infinite;
+  opacity:0.9;
+}
+@keyframes scanMove {
+  0%   { top:10px; opacity:0; }
+  15%  { opacity:1; }
+  85%  { opacity:1; }
+  100% { top:90px; opacity:0; }
+}
+
+.qr-hint-text {
+  font-family:'BDOGrotesk',monospace;
+  font-size:9px; font-weight:600;
+  letter-spacing:0.1em; text-transform:uppercase;
+  color:#888888; text-align:center;
+  line-height:1.5;
+}
+
+.qr-card-bottom {
+  position:absolute; bottom:14px;
+  display:flex; align-items:center; gap:6px;
+}
+.qr-card-num { font-family:'BDOGrotesk',monospace; font-size:8px; color:#CCCCCC; letter-spacing:0.1em; }
+
+/* flip animation */
+.card-flip-wrap {
+  perspective: 800px;
+  width:210px;
+  aspect-ratio:2.5/3.5;
+  cursor:pointer;
+}
+.card-flipper {
+  width:100%; height:100%;
+  position:relative;
+  transform-style:preserve-3d;
+  transition:transform 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.card-flipper.flipped { transform:rotateY(180deg); }
+.card-face {
+  position:absolute; inset:0;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  border-radius:14px;
+  overflow:hidden;
+}
+.card-face.back { transform:rotateY(180deg); }
+
+.flip-hint {
+  font-family:'BDOGrotesk',monospace;
+  font-size:10px; color:#BBBBBB;
+  display:flex; align-items:center; gap:5px;
+}
+.flip-arrow { font-size:14px; }
+
+.btn-scan {
+  width:100%;
+  background:#C9A84C;
+  border:none; border-radius:8px;
+  padding:13px 16px;
+  font-family:'BDOGrotesk',sans-serif;
+  font-size:13px; font-weight:700;
+  letter-spacing:0.05em;
+  color:#FFFFFF;
+  cursor:pointer;
+}
+
+/* FORM */
+.fb { width:100%; display:flex; flex-direction:column; gap:6px; }
+.fl { font-size:9px; font-weight:700; letter-spacing:0.15em; color:#AAAAAA; text-transform:uppercase; font-family:'BDOGrotesk',monospace; }
+.mf { width:100%; background:#F5F5F3; border:1px solid #E2E2E0; border-radius:8px; padding:10px 12px; font-family:'BDOGrotesk',sans-serif; font-size:13px; color:#111111; }
+.mf.fi { border-color:#C9A84C; background:#FDF8EE; }
+.btn-g { width:100%; background:#C9A84C; border:none; border-radius:8px; padding:13px 16px; font-family:'BDOGrotesk',sans-serif; font-size:13px; font-weight:700; letter-spacing:0.05em; color:#FFFFFF; cursor:pointer; }
+.legal { font-size:9px; color:#CCCCCC; text-align:center; line-height:1.5; font-family:'BDOGrotesk',monospace; }
+
+/* TOPLOADER */
+.tl { position:relative; width:140px; }
+.tl-mini { position:relative; width:88px; z-index:2; }
+.tl-tab { width:50px; height:8px; background:#CDCDCD; border-radius:4px 4px 0 0; margin:0 auto; }
+.tl-body { background:linear-gradient(145deg,#DEDEDE,#C8C8C8); border-radius:10px; padding:5px 5px 9px; box-shadow:0 8px 24px rgba(0,0,0,0.10); }
+.tl-mini .tl-body { border:1px solid rgba(201,168,76,0.5); box-shadow:0 0 16px rgba(201,168,76,0.2),0 8px 24px rgba(0,0,0,0.1); }
+.tl-inner { background:#F8F8F8; border-radius:7px; overflow:hidden; position:relative; aspect-ratio:2.5/3.5; display:flex; align-items:center; justify-content:center; }
+.card-art { width:70%; height:65%; background:linear-gradient(145deg,#C9A84C 0%,#F5E4A0 40%,#9A7820 100%); border-radius:6px; display:flex; align-items:center; justify-content:center; z-index:1; }
+.holo { position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,0,128,0) 0%,rgba(120,0,255,0.14) 20%,rgba(0,200,255,0.14) 40%,rgba(0,255,120,0.10) 60%,rgba(255,200,0,0.10) 80%,rgba(255,0,128,0) 100%); mix-blend-mode:screen; animation:holoS 3.5s ease-in-out infinite alternate; pointer-events:none; }
+@keyframes holoS { 0%{opacity:0.5}100%{opacity:1} }
+.rb { position:absolute; top:7px; right:7px; background:#C9A84C; color:#3A2800; font-family:'BDOGrotesk',monospace; font-size:8px; font-weight:700; padding:2px 6px; border-radius:4px; box-shadow:0 0 8px rgba(201,168,76,0.6); z-index:5; }
+.cnr { position:absolute; bottom:6px; right:6px; font-family:'BDOGrotesk',monospace; font-size:8px; color:rgba(0,0,0,0.2); z-index:5; }
+.card-id-r { text-align:center; margin-top:4px; }
+.cid-n { font-size:16px; font-weight:700; letter-spacing:1px; color:#C9A84C; }
+.cid-l { font-family:'BDOGrotesk',monospace; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:#AAAAAA; margin-top:1px; }
+
+/* S2 */
+.act-pill { background:#EDF7F2; border:1px solid #A8DFC0; border-radius:20px; padding:4px 14px; font-family:'BDOGrotesk',monospace; font-size:10px; font-weight:700; letter-spacing:0.1em; color:#2A7A4F; text-transform:uppercase; }
+.div-row { width:100%; display:flex; align-items:center; gap:8px; }
+.div-l { flex:1; height:1px; background:#E2E2E0; }
+.div-t { font-family:'BDOGrotesk',monospace; font-size:9px; color:#BBBBBB; letter-spacing:0.1em; text-transform:uppercase; white-space:nowrap; }
+.btn-row { width:100%; display:flex; gap:8px; }
+.btn-ghost { flex:1; background:#F5F5F3; border:1px solid #E2E2E0; border-radius:8px; padding:10px 8px; font-family:'BDOGrotesk',monospace; font-size:10px; font-weight:700; letter-spacing:0.05em; color:#888888; cursor:pointer; text-transform:uppercase; }
+.btn-gsm { flex:1; background:#C9A84C; border:none; border-radius:8px; padding:10px 8px; font-family:'BDOGrotesk',monospace; font-size:10px; font-weight:700; letter-spacing:0.05em; color:#FFFFFF; cursor:pointer; text-transform:uppercase; }
+
+/* S3 */
+.conf-layer { position:absolute; top:0; left:0; right:0; height:180px; pointer-events:none; overflow:hidden; }
+.cdot { position:absolute; border-radius:1px; animation:cfall linear infinite; }
+@keyframes cfall { 0%{transform:translateY(-16px) rotate(0deg);opacity:1}100%{transform:translateY(180px) rotate(400deg);opacity:0} }
+.unx-pill { background:#FAEEE8; border:1px solid #E8A070; border-radius:20px; padding:4px 14px; font-family:'BDOGrotesk',monospace; font-size:10px; font-weight:700; letter-spacing:0.12em; color:#D45C2A; text-transform:uppercase; z-index:2; animation:unxP 2.5s ease-in-out infinite; }
+@keyframes unxP { 0%,100%{box-shadow:0 0 6px rgba(212,92,42,0.2)}50%{box-shadow:0 0 14px rgba(212,92,42,0.5)} }
+.burst-w { position:relative; width:80px; height:80px; display:flex; align-items:center; justify-content:center; z-index:2; }
+.br { position:absolute; border-radius:50%; animation:pR 2.2s ease-out infinite; }
+.br1 { width:80px; height:80px; border:1.5px solid rgba(201,168,76,0.3); }
+.br2 { width:60px; height:60px; border:1.5px solid rgba(201,168,76,0.6); animation-delay:0.35s; }
+@keyframes pR { 0%{transform:scale(0.75);opacity:0}50%{opacity:1}100%{transform:scale(1.25);opacity:0} }
+.burst-c { width:48px; height:48px; background:#C9A84C; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 20px rgba(201,168,76,0.5); z-index:1; }
+.w-head { font-size:20px; font-weight:700; color:#111111; text-align:center; letter-spacing:-0.3px; line-height:1.2; z-index:2; }
+.ph-cta { width:100%; background:#FDF8EE; border:1px solid #D4B060; border-radius:12px; padding:14px 16px; z-index:2; }
+.ph-cta-l { font-family:'BDOGrotesk',monospace; font-size:9px; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:#888888; margin-bottom:5px; }
+.ph-num { font-size:18px; font-weight:700; color:#C9A84C; letter-spacing:0.05em; margin-bottom:5px; }
+.ph-hint { font-family:'BDOGrotesk',monospace; font-size:10px; color:#666666; line-height:1.5; }
+.btn-call { width:100%; background:#C9A84C; border:none; border-radius:8px; padding:12px; font-family:'BDOGrotesk',sans-serif; font-size:13px; font-weight:700; letter-spacing:0.05em; color:#FFFFFF; cursor:pointer; z-index:2; }
+.hrs { font-family:'BDOGrotesk',monospace; font-size:9px; color:#BBBBBB; text-align:center; letter-spacing:0.08em; text-transform:uppercase; z-index:2; }
+
+/* S4 */
+.nw-icon { width:64px; height:64px; background:#F5F5F3; border:1px solid #E2E2E0; border-radius:14px; display:flex; align-items:center; justify-content:center; }
+.boost-box { width:100%; background:#F0FBF5; border:1px solid #A8DFC0; border-radius:12px; padding:14px; display:flex; align-items:flex-start; gap:12px; }
+.boost-ico { width:36px; height:36px; background:#DDF3E8; border:1px solid #A8DFC0; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.boost-h { font-size:12px; font-weight:700; color:#2A7A4F; margin-bottom:3px; }
+.boost-b { font-family:'BDOGrotesk',monospace; font-size:10px; color:#555555; line-height:1.5; }
+.tok-row { width:100%; background:#F5F5F3; border:1px solid #E2E2E0; border-radius:8px; padding:10px 12px; display:flex; align-items:center; justify-content:space-between; }
+.tok-v { font-family:'BDOGrotesk',monospace; font-size:9px; color:#AAAAAA; letter-spacing:0.05em; }
+.tok-btn { background:transparent; border:1px solid #E2E2E0; border-radius:5px; padding:3px 8px; font-family:'BDOGrotesk',monospace; font-size:9px; color:#888888; cursor:pointer; }
+.btn-back { width:100%; background:#F5F5F3; border:1px solid #E2E2E0; border-radius:8px; padding:11px; font-family:'BDOGrotesk',monospace; font-size:10px; font-weight:700; letter-spacing:0.08em; color:#888888; cursor:pointer; text-transform:uppercase; }
+</style>
+
+<div class="wr">
+
+  <div class="wr-nav">
+    <span class="wr-logo">WR</span>
+    <button class="nb on" data-s="0" onclick="goTo(0)">00 · Karte</button>
+    <button class="nb" data-s="1" onclick="goTo(1)">01 · Login</button>
+    <button class="nb" data-s="2" onclick="goTo(2)">02 · Aktiviert</button>
+    <button class="nb" data-s="3" onclick="goTo(3)">03 · Gewinner</button>
+    <button class="nb" data-s="4" onclick="goTo(4)">04 · Kein Gewinn</button>
+  </div>
+
+  <div class="ph-stage">
+    <div class="ph">
+      <div class="ph-notch"><div class="notch-p"></div></div>
+
+      <!-- ══ SCREEN 0 – PHYSICAL CARD ══ -->
+      <div class="scr on" id="sc0">
+        <div class="sx">
+          <div class="wm">WANNADO.ROCKS</div>
+
+          <div class="card-flip-wrap" onclick="document.getElementById('flipper').classList.toggle('flipped')">
+            <div class="card-flipper" id="flipper">
+
+              <!-- FRONT: card artwork -->
+              <div class="card-face front">
+                <div class="physical-card">
+                  <div class="pc-top">
+                    <div class="pc-brand">WR</div>
+                    <div class="pc-rb">UR HOLO</div>
+                  </div>
+                  <div class="pc-art">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                      <circle cx="24" cy="20" r="12" fill="rgba(255,255,255,0.25)"/>
+                      <rect x="8" y="34" width="32" height="10" rx="4" fill="rgba(255,255,255,0.15)"/>
+                      <text x="24" y="25" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.6)" font-weight="700" font-family="sans-serif">XP</text>
+                    </svg>
+                  </div>
+                  <div class="pc-bottom">
+                    <div class="pc-name">ARTWORK BEAR</div>
+                    <div class="pc-sub">Drop 01 · #0142 / 500</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- BACK: QR code -->
+              <div class="card-face back">
+                <div class="qr-card-wrap">
+                  <div class="qr-card-top-label">WANNADO.ROCKS</div>
+
+                  <div class="qr-box">
+                    <div class="scan-line"></div>
+                    <svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <!-- top-left finder -->
+                      <rect x="4" y="4" width="26" height="26" rx="3" fill="none" stroke="#111" stroke-width="2.5"/>
+                      <rect x="10" y="10" width="14" height="14" rx="1.5" fill="#111"/>
+                      <!-- top-right finder -->
+                      <rect x="60" y="4" width="26" height="26" rx="3" fill="none" stroke="#111" stroke-width="2.5"/>
+                      <rect x="66" y="10" width="14" height="14" rx="1.5" fill="#111"/>
+                      <!-- bottom-left finder -->
+                      <rect x="4" y="60" width="26" height="26" rx="3" fill="none" stroke="#111" stroke-width="2.5"/>
+                      <rect x="10" y="66" width="14" height="14" rx="1.5" fill="#111"/>
+                      <!-- data modules -->
+                      <rect x="36" y="4" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="44" y="4" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="36" y="12" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="44" y="20" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="4" y="36" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="4" y="44" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="12" y="36" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="20" y="44" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="36" y="36" width="6" height="6" rx="1" fill="#C9A84C"/>
+                      <rect x="44" y="36" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="52" y="36" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="60" y="36" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="68" y="36" width="6" height="6" rx="1" fill="#C9A84C"/>
+                      <rect x="76" y="36" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="36" y="44" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="52" y="44" width="6" height="6" rx="1" fill="#C9A84C"/>
+                      <rect x="60" y="44" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="76" y="44" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="44" y="52" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="60" y="52" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="68" y="52" width="6" height="6" rx="1" fill="#C9A84C"/>
+                      <rect x="36" y="60" width="6" height="6" rx="1" fill="#C9A84C"/>
+                      <rect x="44" y="60" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="52" y="60" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="68" y="60" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="76" y="60" width="6" height="6" rx="1" fill="#C9A84C"/>
+                      <rect x="36" y="68" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="52" y="68" width="6" height="6" rx="1" fill="#C9A84C"/>
+                      <rect x="60" y="68" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="76" y="68" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="36" y="76" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="44" y="76" width="6" height="6" rx="1" fill="#C9A84C"/>
+                      <rect x="60" y="76" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="68" y="76" width="6" height="6" rx="1" fill="#111"/>
+                      <rect x="76" y="76" width="6" height="6" rx="1" fill="#C9A84C"/>
+                    </svg>
+                  </div>
+
+                  <div class="qr-hint-text">Karte scannen<br>um zu aktivieren</div>
+                  <div class="qr-card-bottom">
+                    <div class="qr-card-num">#0142 / 500 · Drop 01</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="flip-hint">
+            <span class="flip-arrow">↻</span>
+            Karte umdrehen zum QR-Code
+          </div>
+
+          <button class="btn-scan" onclick="goTo(1)">QR-Code scannen →</button>
+          <div class="legal">Halte die Rückseite deiner Karte<br>vor die Kamera um zu aktivieren.</div>
+        </div>
+      </div>
+
+      <!-- ══ SCREEN 1 – LOGIN ══ -->
+      <div class="scr" id="sc1">
+        <div class="sx">
+          <div class="wm">WANNADO.ROCKS</div>
+          <div style="width:60px;height:60px;background:#F5F5F3;border:1px solid #D4B060;border-radius:14px;display:flex;align-items:center;justify-content:center;">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+              <rect x="2" y="2" width="9" height="9" rx="1.5" fill="#E8E8E8" stroke="#D4B060" stroke-width="0.5"/>
+              <rect x="4" y="4" width="5" height="5" rx="0.5" fill="#C9A84C"/>
+              <rect x="19" y="2" width="9" height="9" rx="1.5" fill="#E8E8E8" stroke="#D4B060" stroke-width="0.5"/>
+              <rect x="21" y="4" width="5" height="5" rx="0.5" fill="#C9A84C"/>
+              <rect x="2" y="19" width="9" height="9" rx="1.5" fill="#E8E8E8" stroke="#D4B060" stroke-width="0.5"/>
+              <rect x="4" y="21" width="5" height="5" rx="0.5" fill="#C9A84C"/>
+              <rect x="13" y="2" width="3" height="3" rx="0.5" fill="#C9A84C"/>
+              <rect x="2" y="13" width="3" height="3" rx="0.5" fill="#C9A84C"/>
+              <rect x="13" y="6" width="3" height="3" rx="0.5" fill="#C9A84C"/>
+              <rect x="6" y="13" width="3" height="3" rx="0.5" fill="#C9A84C"/>
+              <rect x="18" y="13" width="3" height="3" rx="0.5" fill="#C9A84C"/>
+              <rect x="13" y="13" width="3" height="3" rx="0.5" fill="#C9A84C"/>
+              <rect x="13" y="18" width="3" height="3" rx="0.5" fill="#C9A84C"/>
+              <rect x="18" y="18" width="3" height="3" rx="0.5" fill="#C9A84C"/>
+              <rect x="23" y="18" width="3" height="3" rx="0.5" fill="#C9A84C"/>
+              <rect x="18" y="23" width="3" height="3" rx="0.5" fill="#C9A84C"/>
+              <rect x="23" y="23" width="3" height="3" rx="0.5" fill="#C9A84C"/>
+            </svg>
+          </div>
+          <div class="sh">Aktiviere deine<br>Trading Card</div>
+          <div class="ss">Gib deine E-Mail und Bestellnummer<br>ein, um deinen unXpected moment<br>zu enthüllen.</div>
+          <div class="fb"><div class="fl">E-Mail Adresse</div><div class="mf fi">max.mustermann@email.de</div></div>
+          <div class="fb"><div class="fl">Shopify Bestellnummer</div><div class="mf fi">#10042</div></div>
+          <button class="btn-g" onclick="goTo(2)">JETZT AKTIVIEREN →</button>
+          <div class="legal">Deine Daten werden nur zur Aktivierung<br>verwendet und nicht weitergegeben.</div>
+        </div>
+      </div>
+
+      <!-- ══ SCREEN 2 – ACTIVATED ══ -->
+      <div class="scr" id="sc2">
+        <div class="sx">
+          <div class="act-pill">✓ KARTE AKTIVIERT</div>
+          <div class="tl">
+            <div class="tl-tab"></div>
+            <div class="tl-body">
+              <div class="tl-inner">
+                <div class="card-art">
+                  <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                    <circle cx="18" cy="14" r="8" fill="rgba(255,255,255,0.3)"/>
+                    <rect x="6" y="24" width="24" height="8" rx="3" fill="rgba(255,255,255,0.2)"/>
+                    <text x="18" y="18" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.7)" font-weight="700" font-family="sans-serif">XP</text>
+                  </svg>
+                </div>
+                <div class="holo"></div>
+                <div class="rb">UR HOLO</div>
+                <div class="cnr">#0142 / 500</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-id-r"><div class="cid-n">#0142</div><div class="cid-l">Card ID · Drop 01</div></div>
+          <div class="sh" style="font-size:16px;">Deine Karte ist freigeschaltet</div>
+          <div class="ss">Sie ist jetzt in deinem Sammelalbum<br>und deinen Wanna Haves verfügbar.</div>
+          <div class="div-row"><div class="div-l"></div><div class="div-t">Was steckt dahinter?</div><div class="div-l"></div></div>
+          <div class="btn-row">
+            <button class="btn-ghost" onclick="goTo(4)">Kein Gewinn</button>
+            <button class="btn-gsm" onclick="goTo(3)">Gewinner!</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ SCREEN 3 – WINNER ══ -->
+      <div class="scr" id="sc3">
+        <div class="s3x">
+          <div class="conf-layer" id="cconf"></div>
+          <div class="unx-pill">✦ UNEXPECTED MOMENT</div>
+          <div class="burst-w">
+            <div class="br br1"></div><div class="br br2"></div>
+            <div class="burst-c">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <polygon points="11,1.5 13.93,7.62 20.6,8.54 15.8,13.18 17.06,19.84 11,16.75 4.94,19.84 6.2,13.18 1.4,8.54 8.07,7.62" fill="#FFFFFF"/>
+              </svg>
+            </div>
+          </div>
+          <div class="w-head">Glückwunsch!<br>Du hast gewonnen.</div>
+          <div class="tl-mini">
+            <div class="tl-tab"></div>
+            <div class="tl-body">
+              <div class="tl-inner">
+                <div class="card-art" style="width:60%;height:60%;">
+                  <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                    <polygon points="11,2 13.47,8.11 20.02,8.9 15.26,13.37 16.71,19.85 11,16.73 5.29,19.85 6.74,13.37 1.98,8.9 8.53,8.11" fill="rgba(255,255,255,0.5)"/>
+                  </svg>
+                </div>
+                <div class="holo"></div>
+                <div class="rb">UR HOLO</div>
+              </div>
+            </div>
+          </div>
+          <div class="ph-cta">
+            <div class="ph-cta-l">Dein Gewinn wartet</div>
+            <div class="ph-num">+49 (0) 800 123 456</div>
+            <div class="ph-hint">Ruf uns an und wir stimmen<br>gemeinsam mit dir deinen Gewinn ab.</div>
+          </div>
+          <button class="btn-call">JETZT ANRUFEN →</button>
+          <div class="hrs">Mo – Fr · 09 – 18 Uhr · Kostenlos</div>
+        </div>
+      </div>
+
+      <!-- ══ SCREEN 4 – NO WIN ══ -->
+      <div class="scr" id="sc4">
+        <div class="sx">
+          <div class="nw-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <rect x="7" y="5" width="18" height="24" rx="3" fill="#E8E8E6" stroke="#D0D0CE" stroke-width="0.5"/>
+              <rect x="9" y="7" width="14" height="16" rx="2" fill="#F0F0EE"/>
+              <rect x="11" y="9" width="10" height="9" rx="1" fill="#E2E2E0"/>
+              <rect x="11" y="21" width="10" height="2" rx="1" fill="#D8D8D6"/>
+              <rect x="13" y="25" width="6" height="2" rx="1" fill="#E0E0DE"/>
+            </svg>
+          </div>
+          <div class="sh" style="font-size:16px;">Diese Karte enthält<br>keinen unXpected Moment</div>
+          <div class="ss">Aber keine Sorge – deine Karte<br>ist aktiviert und in deinem<br>Sammelalbum gespeichert.</div>
+          <div class="boost-box">
+            <div class="boost-ico">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <rect x="4" y="3" width="12" height="14" rx="2" fill="#A8DFC0" stroke="#2A7A4F" stroke-width="0.5"/>
+                <rect x="6" y="5" width="8" height="8" rx="1" fill="#DDF3E8"/>
+                <rect x="7" y="14" width="6" height="1.5" rx="0.5" fill="#A8DFC0"/>
+              </svg>
+            </div>
+            <div>
+              <div class="boost-h">Bonus beim nächsten Drop</div>
+              <div class="boost-b">Beim nächsten Drop schicken wir dir automatisch ein extra Booster Pack zu – als Dankeschön.</div>
+            </div>
+          </div>
+          <div class="tok-row">
+            <div class="tok-v">WR-D01-CARD-0142-A7F3</div>
+            <button class="tok-btn" onclick="this.textContent='✓ Copied!';setTimeout(()=>this.textContent='⎘ Copy',1800)">⎘ Copy</button>
+          </div>
+          <button class="btn-back" onclick="goTo(2)">← ZURÜCK ZUR KARTE</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function goTo(n){
+  for(let i=0;i<=4;i++){
+    const el=document.getElementById('sc'+i);
+    if(el) el.className='scr'+(i===n?' on':'');
+  }
+  document.querySelectorAll('.nb').forEach(b=>{
+    const a=parseInt(b.dataset.s)===n;
+    b.className='nb'+(a?' on':'');
+  });
+  if(n===3) spawnConfetti();
+}
+function spawnConfetti(){
+  const c=document.getElementById('cconf');
+  if(!c) return;
+  c.innerHTML='';
+  const cols=['#C9A84C','#F5E4A0','#111111','#D45C2A','#9A7820'];
+  for(let i=0;i<22;i++){
+    const d=document.createElement('div');
+    d.className='cdot';
+    d.style.cssText=`left:${Math.random()*100}%;width:${3+Math.random()*6}px;height:${3+Math.random()*6}px;background:${cols[Math.floor(Math.random()*cols.length)]};animation-duration:${1.4+Math.random()*2.2}s;animation-delay:${Math.random()*1.2}s;`;
+    c.appendChild(d);
+  }
+}
+</script>
